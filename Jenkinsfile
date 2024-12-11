@@ -27,9 +27,7 @@ pipeline {
         stage('Print Commit SHA') {
             steps {
                 script {
-                    // Lấy commit SHA
                     env.COMMIT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    echo "Current Commit SHA: ${env.COMMIT_SHA}"
                 }
             }
         }
@@ -62,10 +60,9 @@ EOF'
     }
     post {
         success {
-            def previewUrl = "http://pr-${PR_ID}.example.com"
-            echo "${previewUrl}"
             script {
-                
+                def previewUrl = "http://pr-${PR_ID}.example.com"
+                echo "${previewUrl}"
                 githubNotify(
                     context: 'PR Preview',
                     description: "Preview deployed at http://pr-${PR_ID}.example.com",
