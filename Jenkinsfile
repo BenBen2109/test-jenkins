@@ -66,14 +66,11 @@ EOF'
                 def previewUrl = "http://pr-${PR_ID}.example.com"
                 echo "${previewUrl}"
                 githubNotify(
-                    context: 'PR Preview 123',
+                    context: 'PR Preview',
                     description: "Preview deployed at http://pr-${PR_ID}.example.com",
                     status: 'SUCCESS',
                     credentialsId: 'github-token',
                     repo: 'test-jenkins',
-                    sha: "${env.COMMIT_SHA}",
-                    account: 'BenBen2109',
-                    targetUrl: previewUrl
                 )
             }
         }
@@ -85,8 +82,6 @@ EOF'
                     status: 'FAILURE',
                     credentialsId: 'github-token',
                     repo: 'test-jenkins',
-                    sha: "${env.COMMIT_SHA}",
-                    account: 'BenBen2109'
                 )
             }
         }
