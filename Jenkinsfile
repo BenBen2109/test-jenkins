@@ -11,13 +11,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Kiểm tra nếu là PR, sẽ checkout branch của PR đó
+                    // Nếu là PR, Jenkins sẽ checkout branch của PR đó
                     if (env.CHANGE_ID) {
-                        git(
-                            url: 'https://github.com/BenBen2109/test-jenkins.git',
-                            branch: "refs/pull/${env.CHANGE_ID}/head",
-                            credentialsId: 'github-token'
-                        )
+                        checkout([
+                            $class: 'GitSCM', 
+                            branches: [[name: "refs/pull/${env.CHANGE_ID}/head"]],
+                            userRemoteConfigs: [[
+                                url: 'https://github.com/BenBen2109/test-jenkins.git',
+                                credentialsId: 'github-token'
+                            ]]
+                        ])
                     } else {
                         echo "No Pull Request detected, skipping build."
                     }
