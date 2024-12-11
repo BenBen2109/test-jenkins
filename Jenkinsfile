@@ -66,7 +66,7 @@ EOF'
                 def previewUrl = "http://pr-${PR_ID}.example.com"
                 echo "${previewUrl}"
                 githubNotify(
-                    context: 'PR Preview',
+                    context: 'PR Preview 123',
                     description: "Preview deployed at http://pr-${PR_ID}.example.com",
                     status: 'SUCCESS',
                     credentialsId: 'github-token',
