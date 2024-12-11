@@ -46,8 +46,9 @@ server {
     server_name pr-${PR_ID}.example.com;
     root /var/www/preview/pr-local;
     index index.html;
+    
     location / {
-        try_files \$uri /index.html;
+        try_files $uri $uri/ /index.html;
     }
 }
 EOF'
