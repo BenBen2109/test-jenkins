@@ -45,7 +45,7 @@ pipeline {
                     sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/pr-local.conf
 server {
     listen 80;
-    server_name pr-local.example.com;
+    server_name pr-${PR_ID}.example.com;
     root /var/www/preview/pr-local;
     index index.html;
     location / {
@@ -63,6 +63,7 @@ EOF'
     post {
         success {
             script {
+                def previewUrl = "http://pr-${PR_ID}.example.com"
                 githubNotify(
                     context: 'PR Preview',
                     description: "Preview deployed at http://pr-${PR_ID}.example.com",
@@ -70,7 +71,8 @@ EOF'
                     credentialsId: 'github-token',
                     repo: 'test-jenkins',
                     sha: "${env.COMMIT_SHA}",
-                    account: 'BenBen2109'
+                    account: 'BenBen2109',
+                    target: previewUrl
                 )
             }
         }
