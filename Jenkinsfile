@@ -11,23 +11,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Nếu là PR, Jenkins sẽ checkout branch của PR đó
-                    if (env.CHANGE_ID) {
-                        checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: "FETCH_HEAD"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            extensions: [],
-                            userRemoteConfigs: [[
-                                url: 'https://github.com/BenBen2109/test-jenkins.git',
-                                refspec: "+refs/pull/${env.CHANGE_ID}/head:refs/remotes/origin/PR-${env.CHANGE_ID}",
-                                credentialsId: 'github-token'
-                            ]]
-                        ])
-                    } else {
-                        echo "No Pull Request detected, skipping build."
-                        error "No PR, exiting."
-                    }
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "FETCH_HEAD"]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/BenBen2109/test-jenkins.git',
+                            credentialsId: 'github-token'
+                        ]]
+                    ])
                 }
             }
         }
@@ -70,32 +63,28 @@ EOF'
     post {
         success {
             script {
-                if (env.COMMIT_SHA) {
-                    githubNotify(
-                        context: 'PR Preview',
-                        description: "Preview deployed at http://pr-${PR_ID}.example.com",
-                        status: 'SUCCESS',
-                        credentialsId: 'github-token',
-                        repo: 'test-jenkins',
-                        sha: "${env.COMMIT_SHA}",
-                        account: 'BenBen2109'
-                    )
-                }
+                githubNotify(
+                    context: 'PR Preview',
+                    description: "Preview deployed at http://pr-${PR_ID}.example.com",
+                    status: 'SUCCESS',
+                    credentialsId: 'github-token',
+                    repo: 'test-jenkins',
+                    sha: "${env.COMMIT_SHA}",
+                    account: 'BenBen2109'
+                )
             }
         }
         failure {
             script {
-                if (env.COMMIT_SHA) {
-                    githubNotify(
-                        context: 'PR Preview',
-                        description: "Failed to deploy preview",
-                        status: 'FAILURE',
-                        credentialsId: 'github-token',
-                        repo: 'test-jenkins',
-                        sha: "${env.COMMIT_SHA}",
-                        account: 'BenBen2109'
-                    )
-                }
+                githubNotify(
+                    context: 'PR Preview',
+                    description: "Failed to deploy preview",
+                    status: 'FAILURE',
+                    credentialsId: 'github-token',
+                    repo: 'test-jenkins',
+                    sha: "${env.COMMIT_SHA}",
+                    account: 'BenBen2109'
+                )
             }
         }
     }
