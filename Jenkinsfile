@@ -72,7 +72,7 @@ EOF'
                     repo: 'test-jenkins',
                     sha: "${env.COMMIT_SHA}",
                     account: 'BenBen2109',
-                    target: previewUrl
+                    targetUrl: previewUrl
                 )
             }
         }
