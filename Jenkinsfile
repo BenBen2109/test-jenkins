@@ -44,11 +44,11 @@ pipeline {
 server {
     listen 80;
     server_name pr-${PR_ID}.example.com;
-    root /var/www/preview/pr-local;
+    root /var/www/preview/pr-${PR_ID};
     index index.html;
     
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files \$uri \$uri/ /index.html;
     }
 }
 EOF'
