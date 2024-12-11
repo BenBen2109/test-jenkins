@@ -6,6 +6,7 @@ pipeline {
     environment {
         PR_ID = "${env.CHANGE_ID ?: 'local'}"
         APP_DIR = "/var/www/preview/pr-${env.CHANGE_ID ?: 'local'}"
+        PORT = "80${env.PR_ID}" 
     }
     stages {
         stage('Checkout') {
@@ -42,7 +43,7 @@ pipeline {
                     sh """
                     sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/pr-local.conf
 server {
-    listen 80;
+    listen ${PORT};
     server_name pr-${PR_ID}.example.com;
     root /var/www/preview/pr-${PR_ID};
     index index.html;
