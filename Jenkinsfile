@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    triggers {
+        githubPush()
+    }
     environment {
         PR_ID = "${env.CHANGE_ID ?: 'local'}"
         APP_DIR = "/var/www/preview/pr-${env.CHANGE_ID ?: 'local'}"
