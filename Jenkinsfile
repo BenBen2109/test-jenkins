@@ -62,8 +62,10 @@ EOF'
     }
     post {
         success {
+            def previewUrl = "http://pr-${PR_ID}.example.com"
+            echo "${previewUrl}"
             script {
-                def previewUrl = "http://pr-${PR_ID}.example.com"
+                
                 githubNotify(
                     context: 'PR Preview',
                     description: "Preview deployed at http://pr-${PR_ID}.example.com",
